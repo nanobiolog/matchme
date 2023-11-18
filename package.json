@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "lowdb": "^6.1.1",
+    "whacko": "^0.19.0"
+  }
+}

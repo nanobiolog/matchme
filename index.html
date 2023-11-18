@@ -1,10 +1,6 @@
 <!-- index.html -->
-<!DOCTYPE html>
-<html>
-<body>
-    <input type="text" id="username" placeholder="Enter Letterboxd username">
-    <button id="download">Download Movies JSON</button>
-
-    <script src="letterboxd-export.js"></script>
-</body>
-</html>
+<form action="/export" method="post">
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <input type="submit" value="Submit">
+  </form>

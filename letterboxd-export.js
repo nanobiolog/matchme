@@ -1,5 +1,8 @@
 // Your Letterboxd username should be but here
-const LETTERBOXD_USERNAME = "nanobiolog";
+// letterboxd-export.js
+// Your Letterboxd username should be but here
+const LETTERBOXD_USERNAME = process.argv[2];
+// ... rest of the code
 
 // Set this to true if you are already up to date, but want to prepare your local cache for future use.
 // When a movie is rated on Taste, your local cache will be changed to true for that movie
@@ -8,8 +11,8 @@ const TASTE_DEFAULT_STATUS = null;
 
 const fs = require("fs");
 const PromiseCrawler = require("promise-crawler");
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
 
 const adapter = new FileSync("movies.json");
 const db = low(adapter);

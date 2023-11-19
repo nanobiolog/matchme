@@ -1,0 +1,21 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Letterboxd Scraper</title>
+</head>
+<body>
+  <h1>Letterboxd Scraper</h1>
+  <form action="/scrape" method="post">
+    <label for="username1">Username 1:</label>
+    <input type="text" name="usernames[]" id="username1" required>
+
+    <label for="username2">Username 2:</label>
+    <input type="text" name="usernames[]" id="username2" required>
+
+    <button type="submit">Scrape</button>
+  </form>
+</body>
+</html>

@@ -1,89 +1,86 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Letterboxd Scraper</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letterboxd Scraper</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
-    h1,
-    h3 {
-      text-align: left;
-      color: #333;
-      margin-left: 0;
-      margin-right: 20%; /* Adjust the margin as needed */
-    }
+        h1,
+        h3 {
+            text-align: center;
+            color: #333;
+        }
 
-    form {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 80%;
-      max-width: 400px;
-      margin-left: 20%;
-      margin-right: 20%;
-    }
+        form {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #333;
-    }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
 
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4caf50;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
-  <div>
-    <h1>Letterboxd Scraper</h1>
-    <h3>Find movies you've rated together with your friends</h3>
-  </div>
-  <form action="/scrape" method="post">
-    <label for="username1">Letterboxd Username 1:</label>
-    <input type="text" name="usernames[]" id="username1" required>
+    <div>
+        <h1>Matchd Letterbox</h1>
+        <h3>Find movies you've rated together with your friends</h3>
+    </div>
+    <form action="/scrape" method="post">
+        <label for="username1">Letterboxd Username 1:</label>
+        <input type="text" name="usernames[]" id="username1" required>
 
-    <label for="username2">Letterboxd Username 2:</label>
-    <input type="text" name="usernames[]" id="username2" required>
+        <label for="username2">Letterboxd Username 2:</label>
+        <input type="text" name="usernames[]" id="username2" required>
 
-    <button type="submit">Go</button>
-  </form>
+        <button type="submit">Go</button>
+    </form>
 </body>
 
 </html>

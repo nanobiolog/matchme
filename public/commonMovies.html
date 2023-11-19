@@ -44,6 +44,18 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
+        #movies-count {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        /* Media query for screens with a maximum width of 768px (typical mobile devices) */
+        @media only screen and (max-width: 768px) {
+            ul {
+                margin-right: 0; /* Remove the right margin on smaller screens */
+            }
+        }
     </style>
 </head>
 
@@ -51,7 +63,7 @@
     <h1>Common Movies</h1>
 
     <button id="export-btn">Export as XLS</button>
-
+    <div id="movies-count">0 common movies found</div>
     <div id="movies-container"></div>
 
     <script>
@@ -80,6 +92,10 @@
                         moviesContainer.appendChild(ul);
                         currentPage++; // Increment the current page
                         isLoading = false;
+
+                        // Update movies count
+                        const moviesCount = document.getElementById('movies-count');
+                        moviesCount.textContent = `${commonMovies.length} common movies found`;
                     } else {
                         // Display a message if there are no more items
                         const moviesContainer = document.getElementById('movies-container');

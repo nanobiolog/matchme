@@ -124,11 +124,14 @@ app.post("/scrape", async (req, res) => {
 
   // Include the Letterboxd scraping logic for USERNAME1
   const db1 = setupDatabase("movies1.json");
-  await scrapeLetterboxd(USERNAME1, db1, "movies1.json");
+  const scrape1Promise = scrapeLetterboxd(USERNAME1, db1, "movies1.json");
 
   // Include the Letterboxd scraping logic for USERNAME2
   const db2 = setupDatabase("movies2.json");
-  await scrapeLetterboxd(USERNAME2, db2, "movies2.json");
+  const scrape2Promise = scrapeLetterboxd(USERNAME2, db2, "movies2.json");
+
+  // Wait for both files to be written
+  await Promise.all([scrape1Promise, scrape2Promise]);
 
   // Redirect to commonMovies.html
   res.redirect("/commonMovies.html");

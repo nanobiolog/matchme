@@ -44,7 +44,7 @@ try {
   const commonMoviesJSON = JSON.stringify(commonMoviesObject, null, 2);
 
   // Write the common movies to a new JSON file
-  fs.writeFileSync('commonMovies.json', commonMoviesJSON);
+  fs.writeFileSync('public/commonMovies.json', commonMoviesJSON);
 
   console.log('Common Movies:', commonMovies);
   console.log('Common Movies saved to commonMovies.json');

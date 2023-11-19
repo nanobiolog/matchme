@@ -130,8 +130,8 @@ app.post("/scrape", async (req, res) => {
   const db2 = setupDatabase("movies2.json");
   await scrapeLetterboxd(USERNAME2, db2, "movies2.json");
 
-  // Provide a success message
-  res.send("Scraping completed successfully.");
+  // Redirect to commonMovies.html
+  res.redirect("/commonMovies.html");
 });
 
 app.listen(port, () => {

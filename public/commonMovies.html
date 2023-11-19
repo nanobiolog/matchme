@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Movies</title>
+    <style>
+        /* Your existing CSS styles here */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        #export-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Common Movies</h1>
+
+    <button id="export-btn">Export as XLS</button>
+
+    <div id="movies-container"></div>
+
+    <script>
+        // Fetch data from commonMovies.json
+        fetch('/commonMovies.json')
+            .then(response => response.json())
+            .then(data => {
+                // Extract the commonMovies array from the data
+                const commonMovies = data.commonMovies;
+
+                // Check if there are common movies
+                if (commonMovies && commonMovies.length > 0) {
+                    // Create an HTML list to display the common movies
+                    const moviesContainer = document.getElementById('movies-container');
+                    const ul = document.createElement('ul');
+
+                    commonMovies.forEach(movie => {
+                        const li = document.createElement('li');
+                        const ratings = Object.entries(movie.ratings).map(([username, rating]) => `${username}: ${rating}`).join(', ');
+                        li.textContent = `${movie.title} - Ratings: ${ratings}`;
+                        ul.appendChild(li);
+                    });
+
+                    moviesContainer.appendChild(ul);
+                } else {
+                    // Display a message if there are no common movies
+                    const moviesContainer = document.getElementById('movies-container');
+                    moviesContainer.textContent = 'No common movies found.';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+        document.getElementById('export-btn').addEventListener('click', () => {
+            exportToXLS();
+        });
+
+        function exportToXLS() {
+            // Fetch data from commonMovies.json
+            fetch('/commonMovies.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract the commonMovies array from the data
+                    const commonMovies = data.commonMovies;
+
+                    // Check if there are common movies
+                    if (commonMovies && commonMovies.length > 0) {
+                        // Create an array of objects with proper structure for XLSX conversion
+                        const xlsData = commonMovies.map(movie => {
+                            const xlsObj = {
+                                title: movie.title,
+                            };
+                            Object.entries(movie.ratings).forEach(([username, rating]) => {
+                                xlsObj[`${username}_rating`] = rating;
+                            });
+                            return xlsObj;
+                        });
+
+                        // Create a worksheet
+                        const ws = XLSX.utils.json_to_sheet(xlsData);
+
+                        // Create a workbook
+                        const wb = XLSX.utils.book_new();
+                        XLSX.utils.book_append_sheet(wb, ws, "CommonMovies");
+
+                        // Save the workbook as an XLS file
+                        XLSX.writeFile(wb, 'CommonMovies.xlsx');
+                    } else {
+                        console.log('No common movies found.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+</body>
+
+</html>

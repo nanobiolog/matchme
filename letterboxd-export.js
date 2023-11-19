@@ -1,7 +1,8 @@
 // Your Letterboxd username should be but here
 // letterboxd-export.js
 // Your Letterboxd username should be but here
-const LETTERBOXD_USERNAME = process.argv[2];
+const LETTERBOXD_USERNAME1 = process.argv[2];
+const LETTERBOXD_USERNAME2 = process.argv[3];
 // ... rest of the code
 
 // Set this to true if you are already up to date, but want to prepare your local cache for future use.
@@ -14,25 +15,36 @@ const PromiseCrawler = require("promise-crawler");
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
-const adapter = new FileSync("movies.json");
-const db = low(adapter);
+const adapter1 = new FileSync("movies1.json");
+const db1 = low(adapter1);
 
-db.defaults({ movies: [] }).write();
+db1.defaults({ movies: [] }).write();
+
+const adapter2 = new FileSync("movies2.json");
+const db2 = low(adapter2);
+
+db2.defaults({ movies: [] }).write();
 
 const crawler = new PromiseCrawler({
   maxConnections: 10,
   retries: 3
 });
 
-const LETTERBOXD_FILMS_BASE = `https://letterboxd.com/${LETTERBOXD_USERNAME}/films/`;
+const LETTERBOXD_FILMS_BASE1 = `https://letterboxd.com/${LETTERBOXD_USERNAME1}/films/`;
+const LETTERBOXD_FILMS_BASE2 = `https://letterboxd.com/${LETTERBOXD_USERNAME2}/films/`;
 
 let LETTERBOXD_MAX_PAGES = 0;
 
-const movies = db.get("movies");
-
-const getLetterboxdPage = ({ page }) =>
+const movies1 = db1.get("movies");
+const movies2 = db2.get("movies");
+const getLetterboxdPage1 = ({ page }) =>
   crawler.request({
-    url: `${LETTERBOXD_FILMS_BASE}${page > 1 ? `page/${page}/` : ""}`
+    url: `${LETTERBOXD_FILMS_BASE1}${page > 1 ? `page/${page}/` : ""}`
+  });
+
+const getLetterboxdPage2 = ({ page }) =>
+  crawler.request({
+    url: `${LETTERBOXD_FILMS_BASE2}${page > 1 ? `page/${page}/` : ""}`
   });
 
 const handleLetterBoxdResponse = ({ $ }) => {
@@ -92,9 +104,16 @@ const handleLetterBoxdResponse = ({ $ }) => {
 (async () => {
   await crawler.setup();
 
-  const res = await getLetterboxdPage({ page: 1 });
-  handleLetterBoxdResponse(res);
+  const res1 = await getLetterboxdPage1({ page: 1 });
+  handleLetterBoxdResponse(res1);
 
+  const res2 = await getLetterboxdPage2({ page: 1 });
+  handleLetterBoxdResponse(res2);
+
+  // ... rest of the code
+function handleLetterBoxdResponse1(response) {
+  // Function body goes here
+}
   let pages = [];
 
   if (LETTERBOXD_MAX_PAGES > 1) {

@@ -3,14 +3,14 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FMZ2EKMD5D"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMZ2EKMD5D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-FMZ2EKMD5D');
-</script>
+        gtag('config', 'G-FMZ2EKMD5D');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="public/favicon.png">
@@ -60,6 +60,12 @@
             margin-bottom: 10px;
         }
 
+        #mean-similarity {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
         /* Media query for screens with a maximum width of 768px (typical mobile devices) */
         @media only screen and (max-width: 768px) {
             ul {
@@ -74,6 +80,7 @@
 
     <button id="export-btn">Export as XLSX</button>
     <div id="movies-count">0 common movies found</div>
+    <div id="mean-similarity"></div>
     <div id="movies-container"></div>
 
     <script>
@@ -95,7 +102,7 @@
                         commonMovies.forEach(movie => {
                             const li = document.createElement('li');
                             const ratings = Object.entries(movie.ratings).map(([username, rating]) => `${username}: ${rating}`).join(', ');
-                            li.textContent = `${movie.title} - Ratings: ${ratings}`;
+                            li.textContent = `${movie.title} - Ratings: ${ratings}, Similarity: ${movie.similarityPercentage}%`;
                             ul.appendChild(li);
                         });
 
@@ -106,6 +113,10 @@
                         // Update movies count
                         const moviesCount = document.getElementById('movies-count');
                         moviesCount.textContent = `${commonMovies.length} common movies found`;
+
+                        // Display mean similarity percentage
+                        const meanSimilarityDiv = document.getElementById('mean-similarity');
+                        meanSimilarityDiv.textContent = `Taste Similarity: ${data.meanSimilarityPercentage.toFixed(2)}%`;
                     } else {
                         // Display a message if there are no more items
                         const moviesContainer = document.getElementById('movies-container');

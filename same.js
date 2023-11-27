@@ -1,6 +1,22 @@
 const fs = require('fs');
 
-const getFileName = filePath => filePath.split('/').pop();
+// Function to calculate similarity as a percentage
+function calculateSimilarityPercentage(ratings1, ratings2) {
+  const nonZeroRatings1 = ratings1.filter(rating => rating !== 0);
+  const nonZeroRatings2 = ratings2.filter(rating => rating !== 0);
+
+  const n = Math.min(nonZeroRatings1.length, nonZeroRatings2.length);
+
+  if (n === 0) {
+    return 0; // No common non-zero rated movies
+  }
+
+  const absoluteDifferenceSum = nonZeroRatings1.slice(0, n).reduce((sum, rating1, index) => sum + Math.abs(rating1 - nonZeroRatings2[index]), 0);
+  const maxDifferenceSum = n * 10; // Assuming ratings are in the range of 0-10
+
+  const similarityPercentage = ((maxDifferenceSum - absoluteDifferenceSum) / maxDifferenceSum) * 100;
+  return similarityPercentage;
+}
 
 try {
   // Read the content of the JSON files
@@ -19,26 +35,46 @@ try {
     throw new Error('Failed to parse JSON files');
   }
 
-  // Find common movies based on letterboxdId
-  const commonMovies = data1.movies.reduce((result, movie1) => {
+  // Separate movies into two arrays: one for common movies with non-zero ratings, and another for movies with at least one zero rating
+  const commonMoviesWithNonZeroRating = [];
+  const commonMoviesWithZeroRating = [];
+
+  data1.movies.forEach(movie1 => {
     const matchingMovie2 = data2.movies.find(movie2 => movie2.letterboxdId === movie1.letterboxdId);
 
     if (matchingMovie2) {
-      result.push({
+      const similarityPercentage = calculateSimilarityPercentage(
+        [movie1.letterboxdRating],
+        [matchingMovie2.letterboxdRating]
+      );
+
+      const commonMovie = {
         letterboxdId: movie1.letterboxdId,
         title: movie1.title,
         ratings: {
           [data1.username]: movie1.letterboxdRating,
           [data2.username]: matchingMovie2.letterboxdRating,
         },
-      });
+        similarityPercentage: similarityPercentage,
+      };
+
+      if (movie1.letterboxdRating !== 0 && matchingMovie2.letterboxdRating !== 0) {
+        commonMoviesWithNonZeroRating.push(commonMovie);
+      } else {
+        commonMoviesWithZeroRating.push(commonMovie);
+      }
     }
+  });
 
-    return result;
-  }, []);
+  // Calculate mean similarity percentage for movies with non-zero ratings
+  const nonZeroCommonMovies = commonMoviesWithNonZeroRating.filter(movie => movie.ratings[data1.username] !== 0 && movie.ratings[data2.username] !== 0);
+  const meanSimilarityPercentage = nonZeroCommonMovies.reduce((sum, movie) => sum + movie.similarityPercentage, 0) / nonZeroCommonMovies.length;
 
-  // Create a new JSON object with common movies
-  const commonMoviesObject = { commonMovies };
+  // Include movies with at least one zero rating in the commonMovies array
+  const commonMovies = [...nonZeroCommonMovies, ...commonMoviesWithZeroRating];
+
+  // Create a new JSON object with mean similarity percentage and common movies
+  const commonMoviesObject = { meanSimilarityPercentage, commonMovies };
 
   // Convert the object to JSON string
   const commonMoviesJSON = JSON.stringify(commonMoviesObject, null, 2);

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/805346ad-c244-47eb-b611-24980437c51d/resourceGroups/matchletterserve/providers/Microsoft.Web/sites/matchletter",
+    "appService.deploySubpath": "."
+}

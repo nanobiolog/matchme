@@ -1,0 +1,6 @@
+{
+    "routes": [
+      { "handle": "api/same", "src": "/same", "methods": ["POST"] }
+    ]
+  }
+  

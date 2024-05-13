@@ -95,7 +95,7 @@ const scrapeLetterboxd = async (username, db, fileName) => {
     );
 
     // Start same.js after scraping is completed
-    const sameProcess = spawn("node", ["same.js"]);
+    const sameProcess = spawn("node", ["api/same.js"]);
 
     // Log the output of same.js
     sameProcess.stdout.on("data", (data) => {

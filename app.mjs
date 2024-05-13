@@ -113,7 +113,7 @@ const scrapeLetterboxd = async (username, db, fileName) => {
     });
   });
 };
-res.redirect("/commonMovies.html");
+
 app.post("/scrape", async (req, res) => {
   const usernames = req.body.usernames;
 

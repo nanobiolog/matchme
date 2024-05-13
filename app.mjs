@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "public")));
+app.use(express.static(path.resolve(path.dirname(fileURLToPath(import.meta.url)), "public")));
 
 const crawler = new PromiseCrawler({
   maxConnections: 10,
@@ -67,8 +67,6 @@ const scrapeLetterboxd = async (username, db, fileName) => {
     });
   };
 
-  await crawler.setup();
-
   const res = await getLetterboxdPage({ page: 1 });
   handleLetterBoxdResponse(res);
 
@@ -84,12 +82,12 @@ const scrapeLetterboxd = async (username, db, fileName) => {
 
   responses.forEach(handleLetterBoxdResponse);
 
-  process.nextTick(() => {
+  process.nextTick(async () => {
     crawler.destroy();
 
     // Write the movie data to the specified JSON file with the username at the top
-    fs.writeFileSync(
-      path.join(path.dirname(fileURLToPath(import.meta.url)), fileName),
+    await fs.promises.writeFile(
+      path.resolve(path.dirname(fileURLToPath(import.meta.url)), fileName),
       JSON.stringify({ username, movies: movies.value() })
     );
 
@@ -131,7 +129,8 @@ app.post("/scrape", async (req, res) => {
   const scrape2Promise = scrapeLetterboxd(USERNAME2, db2, "movies2.json");
 
   // Wait for both files to be written
-  await Promise.all([scrape1Promise, scrape2Promise]);
+  await scrape1Promise;
+  await scrape2Promise;
 
   // Redirect to commonMovies.html
   res.redirect("/commonMovies.html");

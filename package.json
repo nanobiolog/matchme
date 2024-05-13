@@ -166,7 +166,7 @@
 ,  
   "devDependencies": {},
   "scripts": {
-    "start": "node --experimental-modules app.mjs"
+    "start": "node app.mjs"
   },
   "repository": {
     "type": "git",

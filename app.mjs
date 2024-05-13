@@ -10,6 +10,9 @@ import { spawn } from "child_process";
 
 const app = express();
 const port = process.env.PORT || 3000;
+app.set('port', port);
+
+
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -95,7 +98,7 @@ const scrapeLetterboxd = async (username, db, fileName) => {
     );
 
     // Start same.js after scraping is completed
-    const sameProcess = spawn("node", ["api/same.js"]);
+    const sameProcess = spawn("node", ["same.js"]);
 
     // Log the output of same.js
     sameProcess.stdout.on("data", (data) => {
@@ -136,6 +139,12 @@ app.post("/scrape", async (req, res) => {
 
   // Redirect to commonMovies.html
   res.redirect("/commonMovies.html");
+
+  
+
+ 
+
+
 });
 
 app.listen(port, () => {

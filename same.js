@@ -1,4 +1,6 @@
+
 const fs = require('fs');
+
 
 // Function to calculate similarity as a percentage
 function calculateSimilarityPercentage(ratings1, ratings2) {

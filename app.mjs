@@ -10,10 +10,6 @@ import { spawn } from "child_process";
 
 const app = express();
 const port = process.env.PORT || 3000;
-app.set('port', port);
-
-
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -139,12 +135,6 @@ app.post("/scrape", async (req, res) => {
 
   // Redirect to commonMovies.html
   res.redirect("/commonMovies.html");
-
-  
-
- 
-
-
 });
 
 app.listen(port, () => {

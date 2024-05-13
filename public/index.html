@@ -3,14 +3,14 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FMZ2EKMD5D"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMZ2EKMD5D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-FMZ2EKMD5D');
-</script>
+        gtag('config', 'G-FMZ2EKMD5D');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Match Letter</title>
@@ -74,7 +74,7 @@
         }
 
         button:hover {
-            background-color: #1e9aff;
+            background-color: #309bf3;
         }
     </style>
 </head>
@@ -84,7 +84,7 @@
         <h1>Matchd Letterbox</h1>
         <h3>Find movies you've rated together with your friends</h3>
     </div>
-    <form action="/scrape" method="post">
+    <form id="scrapeForm" action="/scrape" method="post">
         <label for="username1">Letterboxd Username 1:</label>
         <input type="text" name="usernames[]" id="username1" required>
 
@@ -93,6 +93,32 @@
 
         <button type="submit">Go</button>
     </form>
+
+    <script>
+        document.getElementById('scrapeForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch('/scrape', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    // Scraping process completed successfully, redirect to commonMovies.html
+                    window.location.href = '/commonMovies.html';
+                } else {
+                    // Handle error response
+                    console.error('Error:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
 </body>
 
 </html>
